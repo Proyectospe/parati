@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Árbol Frondoso de Girasoles 💛 Flores Amarillas</title>
+
+  <!-- Google Fonts & Tailwind CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --gold-glow: rgba(255, 215, 0, 0.45);
+      --gold-bright: #ffd54f;
+      --amber-glow: rgba(255, 160, 0, 0.35);
+    }
+
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 45%, #161208 0%, #0d0a06 45%, #060608 85%, #030304 100%);
+      font-family: 'Quicksand', sans-serif;
+      color: #fff;
+    }
+
+    .font-romantic {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    /* Animación de crecimiento de ramas y raíces */
+    .branch-grow {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: growStem 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes growStem {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Florecimiento escalonado de girasoles */
+    .sunflower-pop {
+      transform-origin: center;
+      transform: scale(0) rotate(-45deg);
+      animation: bloomPop 1.3s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+    }
+
+    @keyframes bloomPop {
+      to {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    /* Balanceo sutil de toda la copa arbórea con el viento */
+    .tree-canopy-sway {
+      transform-origin: 400px 520px;
+      animation: treeBreeze 6.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes treeBreeze {
+      0% { transform: rotate(-0.8deg) translateY(0); }
+      50% { transform: rotate(1deg) translateY(-2px); }
+      100% { transform: rotate(-0.5deg) translateY(1.5px); }
+    }
+
+    /* Resplandor pulsante suave en la copa */
+    .golden-canopy-glow {
+      animation: ambientAura 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientAura {
+      0% { filter: drop-shadow(0 0 25px rgba(255, 193, 7, 0.35)); }
+      100% { filter: drop-shadow(0 0 45px rgba(255, 215, 0, 0.65)); }
+    }
+
+    /* Paneles con estética Glassmorphism oscuro y borde dorado */
+    .glass-dark {
+      background: rgba(14, 12, 18, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 193, 7, 0.15);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.22) 0%, rgba(255, 143, 0, 0.38) 50%, rgba(255, 193, 7, 0.22) 100%);
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .btn-action:hover {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.45) 0%, rgba(255, 153, 0, 0.65) 50%, rgba(255, 193, 7, 0.45) 100%);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 22px rgba(255, 215, 0, 0.55);
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 215, 0, 0.35);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="relative w-screen h-screen overflow-hidden select-none">
+
+  <!-- Canvases para fondo cósmico, polen, lluvia de pétalos y chispas interactivas -->
+  <canvas id="starsCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+  <canvas id="ambientCanvas" class="absolute inset-0 pointer-events-none z-10"></canvas>
+  <canvas id="interactiveCanvas" class="absolute inset-0 pointer-events-auto z-20 cursor-pointer"></canvas>
+
+  <!-- Encabezado sutil superior -->
+  <header class="absolute top-4 left-0 right-0 z-30 flex flex-col items-center px-4 pointer-events-none">
+    <div class="pointer-events-auto text-center max-w-md px-6 py-2 rounded-2xl glass-dark">
+      <div class="flex items-center justify-center gap-1.5 mb-0.5">
+        <span class="text-xs uppercase tracking-widest text-amber-300 font-cinzel font-semibold">
+          ✨ Flores Amarillas ✨
+        </span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-romantic text-amber-200 tracking-wide drop-shadow-[0_0_12px_rgba(255,215,0,0.5)]">
+        Ya vez que si pude
+      </h1>
+      <p class="text-[11px] text-amber-100/80 font-medium tracking-wide">
+        Feliz día 💛
+      </p>
+    </div>
+  </header>
+
+  <!-- Controles flotantes inferiores -->
+  <footer class="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 sm:gap-4 pointer-events-auto px-4 py-2 rounded-full glass-dark">
+    <!-- Botón de música sintetizada -->
+    <button id="musicToggleBtn" title="Activar/Pausar melodía" class="btn-action flex items-center justify-center w-11 h-11 rounded-full text-yellow-300 border border-yellow-400/40">
+      <svg id="musicIconPlay" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <svg id="musicIconPause" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </button>
+
+    <!-- Botón para abrir la dedicatoria -->
+    <button id="openLetterBtn" class="btn-action px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide text-amber-100 flex items-center gap-2 border border-yellow-400/50">
+      <span class="text-base">💌</span>
+      <span>Nuestra Carta</span>
+    </button>
+
+    <!-- Botón de Re-florecimiento -->
+    <button id="rebloomBtn" title="Hacer florecer el árbol de nuevo" class="btn-action flex items-center justify-center w-11 h-11 rounded-full text-yellow-300 border border-yellow-400/40">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </button>
+  </footer>
+
+  <!-- ESCENARIO SVG PRINCIPAL: Árbol Frondoso con Ramo de Girasoles en la Base -->
+  <div class="absolute inset-0 pointer-events-none z-10 flex items-end justify-center overflow-hidden">
+    <svg id="treeSvg" class="w-full max-w-3xl h-[88vh] md:h-[93vh]" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Gradientes de Corteza y Tronco -->
+        <linearGradient id="trunkBark" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1f1107"/>
+          <stop offset="40%" stop-color="#3c200e"/>
+          <stop offset="70%" stop-color="#583116"/>
+          <stop offset="100%" stop-color="#734220"/>
+        </linearGradient>
+
+        <linearGradient id="branchGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#381d0d"/>
+          <stop offset="100%" stop-color="#64391b"/>
+        </linearGradient>
+
+        <!-- Gradientes para Pétalos de Girasol -->
+        <linearGradient id="petalGradOuter" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#e65100"/>
+          <stop offset="35%" stop-color="#f57c00"/>
+          <stop offset="75%" stop-color="#fbc02d"/>
+          <stop offset="100%" stop-color="#fff59d"/>
+        </linearGradient>
+
+        <linearGradient id="petalGradInner" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#bf360c"/>
+          <stop offset="45%" stop-color="#ff9800"/>
+          <stop offset="85%" stop-color="#ffeb3b"/>
+          <stop offset="100%" stop-color="#ffffff"/>
+        </linearGradient>
+
+        <radialGradient id="sunflowerCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffb74d"/>
+          <stop offset="25%" stop-color="#bf360c"/>
+          <stop offset="65%" stop-color="#3e1b09"/>
+          <stop offset="90%" stop-color="#241005"/>
+          <stop offset="100%" stop-color="#120602"/>
+        </radialGradient>
+
+        <!-- Gradiente de follaje -->
+        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#8bc34a"/>
+          <stop offset="50%" stop-color="#388e3c"/>
+          <stop offset="100%" stop-color="#1b5e20"/>
+        </linearGradient>
+
+        <!-- Resplandor Dorado General -->
+        <radialGradient id="treeAuraGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffd54f" stop-opacity="0.32"/>
+          <stop offset="50%" stop-color="#ff9800" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#ff6f00" stop-opacity="0"/>
+        </radialGradient>
+
+        <!-- Gradientes para el Ramo en la Base -->
+        <linearGradient id="kraftPaper" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d7ccc8"/>
+          <stop offset="50%" stop-color="#a1887f"/>
+          <stop offset="100%" stop-color="#6d4c41"/>
+        </linearGradient>
+
+        <linearGradient id="redRibbon" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#b71c1c"/>
+          <stop offset="50%" stop-color="#f44336"/>
+          <stop offset="100%" stop-color="#d32f2f"/>
+        </linearGradient>
+
+        <filter id="glowEffect" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+
+      <!-- Resplandor áurico detrás de la copa -->
+      <circle cx="400" cy="420" r="340" fill="url(#treeAuraGlow)" class="golden-canopy-glow"/>
+
+      <!-- 1. BASE Y RAÍCES DORADAS -->
+      <g id="rootsLayer">
+        <!-- Resplandor terrenal en la base -->
+        <ellipse cx="400" cy="945" rx="260" ry="40" fill="#ffb300" opacity="0.08" filter="url(#glowEffect)"/>
+        <ellipse cx="400" cy="945" rx="190" ry="25" fill="#1b1108"/>
+
+        <!-- Raíces ancladas -->
+        <path class="branch-grow" d="M 400 930 C 370 940 310 955 250 970" stroke="url(#trunkBark)" stroke-width="16" stroke-linecap="round"/>
+        <path class="branch-grow" d="M 400 930 C 430 940 490 955 550 970" stroke="url(#trunkBark)" stroke-width="16" stroke-linecap="round"/>
+        <path class="branch-grow" d="M 390 935 C 370 955 350 975 320 985" stroke="url(#trunkBark)" stroke-width="12" stroke-linecap="round"/>
+        <path class="branch-grow" d="M 410 935 C 430 955 450 975 480 985" stroke="url(#trunkBark)" stroke-width="12" stroke-linecap="round"/>
+      </g>
+
+      <!-- 2. TRONCO ORGÁNICO -->
+      <g id="trunkLayer">
+        <path class="branch-grow" d="M 400 935 C 380 840 375 730 400 620" stroke="url(#trunkBark)" stroke-width="44" stroke-linecap="round"/>
+        <!-- Texturas y vetas del tronco -->
+        <path class="branch-grow" d="M 388 880 C 375 790 380 710 395 625" stroke="#251208" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+        <path class="branch-grow" d="M 412 870 C 418 785 410 705 405 625" stroke="#9a5829" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+      </g>
+
+      <!-- 3. RAMAS PRINCIPALES DEL ÁRBOL -->
+      <g id="branchesLayer"></g>
+
+      <!-- 4. COPA FRONDOSA DE GIRASOLES (Balanceada por la brisa) -->
+      <g id="treeCanopy" class="tree-canopy-sway">
+        <!-- Capa de follaje de hojas verdes de fondo -->
+        <g id="leavesLayer"></g>
+
+        <!-- Capa masiva de girasoles floreciendo -->
+        <g id="sunflowersLayer"></g>
+      </g>
+
+      <!-- 5. RAMO DE GIRASOLES EN LA BASE DEL TRONCO (Ofrenda de amor) -->
+      <g id="baseBouquetLayer" class="cursor-pointer" transform="translate(400, 915) scale(0.95)" filter="drop-shadow(0 8px 16px rgba(0,0,0,0.8))">
+        <!-- Papel Kraft Envolvente -->
+        <polygon points="-80,-25 0,35 80,-25 60,-85 -60,-85" fill="url(#kraftPaper)" stroke="#4e342e" stroke-width="1.5"/>
+        <polygon points="-75,-25 0,30 75,-25" fill="#8d6e63" opacity="0.5"/>
+        <!-- Doblez de solapas frontales -->
+        <path d="M -65 -80 L 0 -10 L 65 -80" stroke="#ffecb3" stroke-width="1" stroke-dasharray="3,3" fill="none" opacity="0.4"/>
+
+        <!-- Girasoles del ramo -->
+        <g id="bouquetFlowers">
+          <!-- Flor izquierda -->
+          <g transform="translate(-42, -90) scale(0.85)">
+            <circle cx="0" cy="0" r="14" fill="#3e1b09"/>
+            <g class="bouquet-petals">
+              <circle cx="0" cy="-22" r="7" fill="#ffca28"/>
+              <circle cx="16" cy="-16" r="7" fill="#ffb300"/>
+              <circle cx="22" cy="0" r="7" fill="#ffca28"/>
+              <circle cx="16" cy="16" r="7" fill="#ffb300"/>
+              <circle cx="0" cy="22" r="7" fill="#ffca28"/>
+              <circle cx="-16" cy="16" r="7" fill="#ffb300"/>
+              <circle cx="-22" cy="0" r="7" fill="#ffca28"/>
+              <circle cx="-16" cy="-16" r="7" fill="#ffb300"/>
+            </g>
+            <circle cx="0" cy="0" r="10" fill="#241005"/>
+          </g>
+
+          <!-- Flor derecha -->
+          <g transform="translate(42, -90) scale(0.85)">
+            <circle cx="0" cy="0" r="14" fill="#3e1b09"/>
+            <g class="bouquet-petals">
+              <circle cx="0" cy="-22" r="7" fill="#ffca28"/>
+              <circle cx="16" cy="-16" r="7" fill="#ffb300"/>
+              <circle cx="22" cy="0" r="7" fill="#ffca28"/>
+              <circle cx="16" cy="16" r="7" fill="#ffb300"/>
+              <circle cx="0" cy="22" r="7" fill="#ffca28"/>
+              <circle cx="-16" cy="16" r="7" fill="#ffb300"/>
+              <circle cx="-22" cy="0" r="7" fill="#ffca28"/>
+              <circle cx="-16" cy="-16" r="7" fill="#ffb300"/>
+            </g>
+            <circle cx="0" cy="0" r="10" fill="#241005"/>
+          </g>
+
+          <!-- Flor central más alta -->
+          <g transform="translate(0, -115) scale(1.05)">
+            <circle cx="0" cy="0" r="16" fill="#3e1b09"/>
+            <g class="bouquet-petals">
+              <circle cx="0" cy="-26" r="8" fill="#ffd54f"/>
+              <circle cx="18" cy="-18" r="8" fill="#ffb300"/>
+              <circle cx="26" cy="0" r="8" fill="#ffd54f"/>
+              <circle cx="18" cy="18" r="8" fill="#ffb300"/>
+              <circle cx="0" cy="26" r="8" fill="#ffd54f"/>
+              <circle cx="-18" cy="18" r="8" fill="#ffb300"/>
+              <circle cx="-26" cy="0" r="8" fill="#ffd54f"/>
+              <circle cx="-18" cy="-18" r="8" fill="#ffb300"/>
+            </g>
+            <circle cx="0" cy="0" r="12" fill="#241005"/>
+          </g>
+        </g>
+
+        <!-- Lazo Rojo y Cinta de Regalo -->
+        <path d="M -22 -15 Q 0 -5 22 -15 Q 12 15 0 25 Q -12 15 -22 -15 Z" fill="url(#redRibbon)" stroke="#7f0000" stroke-width="1"/>
+        <circle cx="0" cy="-5" r="7" fill="#b71c1c" stroke="#ffd54f" stroke-width="1"/>
+        <!-- Colas de la cinta que cuelgan -->
+        <path d="M -3 2 C -10 18 -20 28 -28 36" stroke="url(#redRibbon)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M 3 2 C 10 18 20 28 28 36" stroke="url(#redRibbon)" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+        <!-- Tarjetita con dedicatoria en el ramo -->
+        <g transform="translate(32, -35) rotate(12)">
+          <rect x="-18" y="-12" width="36" height="24" rx="4" fill="#fff9c4" stroke="#ffb300" stroke-width="1"/>
+          <text x="0" y="3" font-family="'Great Vibes', cursive" font-size="12" fill="#bf360c" text-anchor="middle">Para ti</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- MODAL DE LA CARTA DEDICATORIA -->
+  <div id="letterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="letterCard" class="glass-dark w-full max-w-lg rounded-3xl p-6 md:p-8 border border-yellow-400/40 text-left relative transform scale-95 transition-all duration-300 max-h-[92vh] flex flex-col shadow-[0_0_50px_rgba(255,215,0,0.25)]">
+      
+      <!-- Botón cerrar modal -->
+      <button id="closeLetterBtn" aria-label="Cerrar carta" class="absolute top-4 right-4 text-yellow-200/70 hover:text-yellow-100 p-2 rounded-full hover:bg-yellow-400/15 transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Cabecera de la carta -->
+      <div class="text-center pb-3 border-b border-yellow-500/25">
+        <span class="text-[11px] uppercase tracking-widest text-amber-300 font-cinzel flex items-center justify-center gap-1.5 font-bold">
+          <span>🌻</span> Flores Amarillas Eternas <span>🌻</span>
+        </span>
+        <h2 id="recipientDisplayName" class="text-3xl md:text-4xl font-romantic text-yellow-200 mt-1 drop-shadow-[0_0_12px_rgba(255,215,0,0.6)]">
+          Para ti
+        </h2>
+      </div>
+
+      <!-- Texto con efecto máquina de escribir -->
+      <div class="custom-scroll overflow-y-auto flex-1 my-4 pr-1">
+        <div id="typewriterText" class="text-sm md:text-base leading-relaxed text-amber-50/95 whitespace-pre-line font-light"></div>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    /* =========================================================================
+       1. ARQUITECTURA MATEMÁTICA: Copa Frondosa en Forma de Corazón
+       ========================================================================= */
+
+    // Ecuación cardioide paramétrica del corazón con escala adaptable
+    function getHeartPoint(t, scale = 17.2, centerOffsetX = 400, centerOffsetY = 380) {
+      const sinT = Math.sin(t);
+      const x = scale * (16 * Math.pow(sinT, 3));
+      // Invertir Y porque en coordenadas SVG crece hacia abajo
+      const y = -scale * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+      return { x: centerOffsetX + x, y: centerOffsetY + y };
+    }
+
+    // Generador de SVG para hojas verdes de la copa con volumen
+    function createTreeLeafSvg(x, y, scale = 1, rotationDeg = 0, delaySec = 0) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'sunflower-pop');
+      g.style.animationDelay = `${Math.max(0, delaySec)}s`;
+      g.style.transformOrigin = `${x}px ${y}px`;
+
+      const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      leaf.setAttribute('d', `M ${x} ${y} Q ${x + 22 * scale} ${y - 14 * scale} ${x + 36 * scale} ${y} Q ${x + 22 * scale} ${y + 14 * scale} ${x} ${y}`);
+      leaf.setAttribute('fill', 'url(#leafGrad)');
+      leaf.setAttribute('transform', `rotate(${rotationDeg}, ${x}, ${y})`);
+      leaf.setAttribute('opacity', '0.9');
+      g.appendChild(leaf);
+      return g;
+    }
+
+    // Generador de SVG para un Girasol tupido y exuberante sin espacios vacíos
+    function createSunflowerSvg(x, y, radius, delaySec) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'sunflower-pop');
+      g.style.animationDelay = `${delaySec}s`;
+      g.style.transformOrigin = `${x}px ${y}px`;
+
+      // Resplandor cálido en la base de cada flor para fundir los pétalos
+      const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      glow.setAttribute('cx', x);
+      glow.setAttribute('cy', y);
+      glow.setAttribute('r', radius * 1.25);
+      glow.setAttribute('fill', 'url(#treeAuraGlow)');
+      g.appendChild(glow);
+
+      // Corona exterior tupida de 13 pétalos anchos
+      const count = 13;
+      for (let i = 0; i < count; i++) {
+        const angle = (i * 360) / count;
+        const petal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        petal.setAttribute('cx', x);
+        petal.setAttribute('cy', y - radius * 0.72);
+        petal.setAttribute('rx', radius * 0.26); // Pétalos más anchos para mayor cobertura
+        petal.setAttribute('ry', radius * 0.65);
+        petal.setAttribute('fill', 'url(#petalGradOuter)');
+        petal.setAttribute('transform', `rotate(${angle}, ${x}, ${y})`);
+        g.appendChild(petal);
+      }
+
+      // Corona interior de 13 pétalos intercalados para cobertura 100% cerrada
+      for (let i = 0; i < count; i++) {
+        const angle = (i * 360) / count + (180 / count);
+        const petalInner = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        petalInner.setAttribute('cx', x);
+        petalInner.setAttribute('cy', y - radius * 0.58);
+        petalInner.setAttribute('rx', radius * 0.21);
+        petalInner.setAttribute('ry', radius * 0.52);
+        petalInner.setAttribute('fill', 'url(#petalGradInner)');
+        petalInner.setAttribute('transform', `rotate(${angle}, ${x}, ${y})`);
+        g.appendChild(petalInner);
+      }
+
+      // Núcleo de semillas de café oscuro
+      const core = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      core.setAttribute('cx', x);
+      core.setAttribute('cy', y);
+      core.setAttribute('r', radius * 0.44);
+      core.setAttribute('fill', 'url(#sunflowerCore)');
+      g.appendChild(core);
+
+      // Semillitas concéntricas brillantes
+      const dotRadius = radius * 0.23;
+      for (let d = 0; d < 6; d++) {
+        const dAngle = (d * Math.PI) / 3;
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', x + Math.cos(dAngle) * dotRadius);
+        dot.setAttribute('cy', y + Math.sin(dAngle) * dotRadius);
+        dot.setAttribute('r', Math.max(1, radius * 0.055));
+        dot.setAttribute('fill', '#ffeb3b');
+        dot.setAttribute('opacity', '0.85');
+        g.appendChild(dot);
+      }
+
+      return g;
+    }
+
+    /* Construye el árbol completo: Ramas orgánicas y copa ultra densa en corazón */
+    function buildSunflowerHeartTree() {
+      const branchesLayer = document.getElementById('branchesLayer');
+      const leavesLayer = document.getElementById('leavesLayer');
+      const blossomsLayer = document.getElementById('sunflowersLayer');
+
+      branchesLayer.innerHTML = '';
+      leavesLayer.innerHTML = '';
+      blossomsLayer.innerHTML = '';
+
+      // Ramas principales que sustentan la copa del árbol
+      const heartBranches = [
+        // Lóbulo izquierdo
+        { d: 'M 400 660 C 350 630 270 590 230 510', w: 18, delay: 0.2 },
+        { d: 'M 230 510 C 190 440 160 360 200 270', w: 13, delay: 0.35 },
+        { d: 'M 200 270 C 230 200 310 180 370 230', w: 9, delay: 0.5 },
+        { d: 'M 230 510 C 270 450 310 400 340 330', w: 11, delay: 0.4 },
+
+        // Lóbulo derecho
+        { d: 'M 400 660 C 450 630 530 590 570 510', w: 18, delay: 0.2 },
+        { d: 'M 570 510 C 610 440 640 360 600 270', w: 13, delay: 0.35 },
+        { d: 'M 600 270 C 570 200 490 180 430 230', w: 9, delay: 0.5 },
+        { d: 'M 570 510 C 530 450 490 400 460 330', w: 11, delay: 0.4 },
+
+        // Hendidura superior y centro
+        { d: 'M 400 660 C 395 560 395 450 400 340', w: 15, delay: 0.3 },
+        { d: 'M 400 340 C 385 300 390 270 400 250', w: 8, delay: 0.55 }
+      ];
+
+      heartBranches.forEach(b => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'branch-grow');
+        path.setAttribute('d', b.d);
+        path.setAttribute('stroke', 'url(#branchGrad)');
+        path.setAttribute('stroke-width', b.w);
+        path.setAttribute('stroke-linecap', 'round');
+        path.style.animationDelay = `${b.delay}s`;
+        branchesLayer.appendChild(path);
+      });
+
+      // Configuración de múltiples capas concéntricas con empaquetado cerrado (Honeycomb/Hexagonal)
+      // Cada anillo reduce ligeramente su radio relativo 'r', eliminando por completo cualquier separación
+      const ringConfigs = [
+        { r: 1.00, count: 52, radius: 26, leafProb: 1.0 },
+        { r: 0.88, count: 46, radius: 26, leafProb: 0.6 },
+        { r: 0.76, count: 40, radius: 25, leafProb: 0.5 },
+        { r: 0.64, count: 34, radius: 25, leafProb: 0.4 },
+        { r: 0.52, count: 28, radius: 24, leafProb: 0.3 },
+        { r: 0.40, count: 22, radius: 24, leafProb: 0.2 },
+        { r: 0.28, count: 16, radius: 23, leafProb: 0.1 },
+        { r: 0.16, count: 10, radius: 23, leafProb: 0.0 },
+        { r: 0.07, count: 6,  radius: 22, leafProb: 0.0 }
+      ];
+
+      const heartCenterY = 380;
+      const baseScale = 17.2;
+
+      // Generar los anillos concéntricos superpuestos
+      ringConfigs.forEach((ring, ringIdx) => {
+        const ringScale = baseScale * ring.r;
+        const phaseOffset = (ringIdx % 2 === 1) ? (Math.PI / ring.count) : 0; // Desplazamiento hexagonal
+
+        for (let i = 0; i < ring.count; i++) {
+          const t = ((i * 2 * Math.PI) / ring.count) + phaseOffset;
+          const pt = getHeartPoint(t, ringScale, 400, heartCenterY);
+
+          // Variación sutil de radio y posición para aspecto natural y entrelazado
+          const radiusJitter = (Math.sin(i * 3 + ringIdx) * 1.5);
+          const currentRadius = ring.radius + radiusJitter;
+
+          // Animación de florecimiento desde el centro del corazón hacia las puntas
+          const delay = 0.5 + (1 - ring.r) * 0.7 + (i / ring.count) * 0.4 + (Math.random() * 0.15);
+
+          blossomsLayer.appendChild(createSunflowerSvg(pt.x, pt.y, currentRadius, delay));
+
+          // Agregar hojas en el perímetro y zonas intermedias para dar frondosidad natural
+          if (Math.random() <= ring.leafProb) {
+            const leafAngle = Math.atan2(pt.y - heartCenterY, pt.x - 400) * (180 / Math.PI);
+            leavesLayer.appendChild(createTreeLeafSvg(pt.x, pt.y, 0.9, leafAngle + 15, delay - 0.15));
+            if (ring.r > 0.9) {
+              leavesLayer.appendChild(createTreeLeafSvg(pt.x, pt.y, 0.8, leafAngle - 25, delay - 0.1));
+            }
+          }
+        }
+      });
+
+      // Relleno sólido del núcleo central y vértice inferior para asegurar 0 huecos
+      const coreFills = [
+        { x: 400, y: 380, r: 25, d: 0.6 },
+        { x: 382, y: 360, r: 24, d: 0.65 },
+        { x: 418, y: 360, r: 24, d: 0.65 },
+        { x: 380, y: 405, r: 24, d: 0.7 },
+        { x: 420, y: 405, r: 24, d: 0.7 },
+        // Punta inferior en cuña hacia el tronco
+        { x: 400, y: 555, r: 24, d: 1.1 },
+        { x: 400, y: 585, r: 23, d: 1.15 },
+        { x: 400, y: 615, r: 22, d: 1.2 },
+        { x: 400, y: 642, r: 20, d: 1.25 }
+      ];
+
+      coreFills.forEach(c => {
+        blossomsLayer.appendChild(createSunflowerSvg(c.x, c.y, c.r, c.d));
+        leavesLayer.appendChild(createTreeLeafSvg(c.x, c.y, 0.8, (c.x * 5 + c.y) % 360, c.d - 0.1));
+      });
+    }
+
+    // Alias para compatibilidad de invocación
+    const buildLushSunflowerTree = buildSunflowerHeartTree;
+
+    /* =========================================================================
+       2. CANVASES DE FONDO: Estrellas, Lluvia de Pétalos y Chispas Interactivas
+       ========================================================================= */
+
+    const starsCanvas = document.getElementById('starsCanvas');
+    const sctx = starsCanvas.getContext('2d');
+    const ambientCanvas = document.getElementById('ambientCanvas');
+    const actx = ambientCanvas.getContext('2d');
+    const interactiveCanvas = document.getElementById('interactiveCanvas');
+    const ictx = interactiveCanvas.getContext('2d');
+
+    let width = (starsCanvas.width = ambientCanvas.width = interactiveCanvas.width = window.innerWidth);
+    let height = (starsCanvas.height = ambientCanvas.height = interactiveCanvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = starsCanvas.width = ambientCanvas.width = interactiveCanvas.width = window.innerWidth;
+      height = starsCanvas.height = ambientCanvas.height = interactiveCanvas.height = window.innerHeight;
+      drawStarField();
+    });
+
+    // Estrellas tenues y fijas en el fondo oscuro
+    const starList = [];
+    for (let i = 0; i < 90; i++) {
+      starList.push({
+        x: Math.random() * width,
+        y: Math.random() * height * 0.8,
+        radius: 0.6 + Math.random() * 1.4,
+        baseAlpha: 0.15 + Math.random() * 0.45,
+        twinkleSpeed: 0.02 + Math.random() * 0.03,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    function drawStarField() {
+      sctx.clearRect(0, 0, width, height);
+      starList.forEach(st => {
+        st.phase += st.twinkleSpeed;
+        const currentAlpha = st.baseAlpha + Math.sin(st.phase) * 0.15;
+        sctx.fillStyle = `rgba(255, 248, 220, ${Math.max(0.05, currentAlpha)})`;
+        sctx.beginPath();
+        sctx.arc(st.x, st.y, st.radius, 0, Math.PI * 2);
+        sctx.fill();
+      });
+      requestAnimationFrame(drawStarField);
+    }
+
+    // Pétalos amarillos y motas de polen flotante en suave caída
+    const petalParticles = [];
+    const totalPetals = 45;
+
+    for (let i = 0; i < totalPetals; i++) {
+      petalParticles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        rx: 3 + Math.random() * 4.5,
+        ry: 7 + Math.random() * 8,
+        speedY: 0.6 + Math.random() * 0.9,
+        speedX: 0.2 + Math.random() * 0.6,
+        angle: Math.random() * Math.PI * 2,
+        rotSpeed: 0.01 + Math.random() * 0.025,
+        swayAmplitude: 20 + Math.random() * 30,
+        swaySpeed: 0.015 + Math.random() * 0.02,
+        alpha: 0.35 + Math.random() * 0.55
+      });
+    }
+
+    function renderAmbientLoop() {
+      actx.clearRect(0, 0, width, height);
+
+      petalParticles.forEach(p => {
+        p.angle += p.rotSpeed;
+        p.y += p.speedY;
+        p.x += Math.sin(p.angle) * 0.5 + p.speedX;
+
+        if (p.y > height + 20) {
+          p.y = -20;
+          p.x = Math.random() * width;
+        }
+        if (p.x > width + 20) p.x = -20;
+
+        actx.save();
+        actx.translate(p.x, p.y);
+        actx.rotate(p.angle);
+        actx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+        actx.shadowBlur = 8;
+        actx.shadowColor = 'rgba(255, 193, 7, 0.4)';
+
+        // Forma de pétalo elíptico
+        actx.beginPath();
+        actx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2);
+        actx.fill();
+        actx.restore();
+      });
+
+      requestAnimationFrame(renderAmbientLoop);
+    }
+
+    // Chispas, corazones y destellos al hacer clic o tocar la pantalla
+    const touchSparks = [];
+
+    function triggerSparksAt(clickX, clickY) {
+      const count = 20;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 1.8 + Math.random() * 4.2;
+        touchSparks.push({
+          x: clickX,
+          y: clickY,
+          vx: Math.cos(angle) * velocity,
+          vy: Math.sin(angle) * velocity - 1.0,
+          radius: 2 + Math.random() * 3.5,
+          alpha: 1,
+          decay: 0.015 + Math.random() * 0.02,
+          isHeart: Math.random() > 0.65,
+          color: Math.random() > 0.4 ? '#ffd54f' : '#ffb300'
+        });
+      }
+    }
+
+    function drawSparkHeart(ctx, x, y, size) {
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(x, y + topCurveHeight);
+      ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 2, x, y + size);
+      ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 2, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+      ctx.fill();
+    }
+
+    function renderInteractiveLoop() {
+      ictx.clearRect(0, 0, width, height);
+
+      for (let i = touchSparks.length - 1; i >= 0; i--) {
+        const s = touchSparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.vy += 0.07; // Gravedad suave
+        s.alpha -= s.decay;
+
+        if (s.alpha <= 0) {
+          touchSparks.splice(i, 1);
+          continue;
+        }
+
+        ictx.save();
+        ictx.globalAlpha = s.alpha;
+        ictx.fillStyle = s.color;
+        ictx.shadowBlur = 12;
+        ictx.shadowColor = '#ffe082';
+
+        if (s.isHeart) {
+          drawSparkHeart(ictx, s.x, s.y, s.radius * 3);
+        } else {
+          ictx.beginPath();
+          ictx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ictx.fill();
+        }
+        ictx.restore();
+      }
+
+      requestAnimationFrame(renderInteractiveLoop);
+    }
+
+    interactiveCanvas.addEventListener('pointerdown', (e) => {
+      triggerSparksAt(e.clientX, e.clientY);
+      playHarpChime();
+    });
+
+    // Interacción especial al tocar el ramo de la base
+    const baseBouquetLayer = document.getElementById('baseBouquetLayer');
+    baseBouquetLayer.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      triggerSparksAt(e.clientX, e.clientY);
+      playHarpChime();
+      openLetterModal();
+    });
+
+    /* =========================================================================
+       3. MODAL DE CARTA: Typewriter
+       ========================================================================= */
+
+    const letterRecipient = "Para ti";
+    const letterPoem = `¿Ves que sí resolví? Al menos no te quedarás siendo espectadora esta vez.
+
+  Gracias por tu compañía y por tus anécdotas, por las veces que me chismeas. Sé que eres una buena persona y me gustaría que sigamos así.
+
+  Espero que te guste. Al menos no es mucho, pero es con todo cariño. Espero conocerte algún día.
+
+  Atte. Alguien por ahí... ahí... ahí...`;
+
+    const letterModal = document.getElementById('letterModal');
+    const letterCard = document.getElementById('letterCard');
+    const openLetterBtn = document.getElementById('openLetterBtn');
+    const closeLetterBtn = document.getElementById('closeLetterBtn');
+    const typewriterText = document.getElementById('typewriterText');
+    const recipientDisplayName = document.getElementById('recipientDisplayName');
+
+
+    let typeWriterTimer = null;
+
+    function runTypewriter(text) {
+      if (typeWriterTimer) clearInterval(typeWriterTimer);
+      typewriterText.textContent = '';
+      let index = 0;
+      typeWriterTimer = setInterval(() => {
+        if (index < text.length) {
+          typewriterText.textContent += text.charAt(index);
+          index++;
+        } else {
+          clearInterval(typeWriterTimer);
+        }
+      }, 18);
+    }
+
+    function openLetterModal() {
+      recipientDisplayName.textContent = letterRecipient;
+
+      letterModal.classList.remove('opacity-0', 'pointer-events-none');
+      letterCard.classList.remove('scale-95');
+      letterCard.classList.add('scale-100');
+
+      runTypewriter(letterPoem);
+    }
+
+    function closeLetterModal() {
+      if (typeWriterTimer) clearInterval(typeWriterTimer);
+      letterModal.classList.add('opacity-0', 'pointer-events-none');
+      letterCard.classList.remove('scale-100');
+      letterCard.classList.add('scale-95');
+    }
+
+    openLetterBtn.addEventListener('click', openLetterModal);
+    closeLetterBtn.addEventListener('click', closeLetterModal);
+
+    /* =========================================================================
+       4. SINTETIZADOR WEB AUDIO API: Melodía de Campanas / Arpa Romántica
+       ========================================================================= */
+
+    let audioContext = null;
+    let isMelodyPlaying = false;
+    let melodyTimer = null;
+
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const musicIconPlay = document.getElementById('musicIconPlay');
+    const musicIconPause = document.getElementById('musicIconPause');
+
+    // Escala pentatónica luminosa (Fa# / Re Mayor)
+    const romanticScale = [293.66, 329.63, 369.99, 440.00, 493.88, 587.33, 659.25, 739.99];
+
+    function getOrCreateAudioContext() {
+      if (!audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioCtx();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    }
+
+    function playTone(frequency, duration = 1.4, volume = 0.08) {
+      if (!audioContext) return;
+      try {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+        gain.gain.setValueAtTime(0, audioContext.currentTime);
+        gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (err) {
+        // Ignorar fallas silenciosamente
+      }
+    }
+
+    function playHarpChime() {
+      if (!isMelodyPlaying) return;
+      getOrCreateAudioContext();
+      const chimeFreq = 880 + Math.random() * 400;
+      playTone(chimeFreq, 0.8, 0.05);
+    }
+
+    let noteIdx = 0;
+    const melodyPattern = [0, 2, 4, 5, 3, 1, 4, 6, 5, 2, 3, 4, 1, 0];
+
+    function loopMelodyNotes() {
+      if (!isMelodyPlaying) return;
+
+      const scaleIndex = melodyPattern[noteIdx % melodyPattern.length];
+      playTone(romanticScale[scaleIndex], 1.6, 0.07);
+
+      noteIdx++;
+      const nextDelay = 460 + Math.sin(noteIdx * 0.7) * 110;
+      melodyTimer = setTimeout(loopMelodyNotes, nextDelay);
+    }
+
+    function toggleMelody() {
+      getOrCreateAudioContext();
+      isMelodyPlaying = !isMelodyPlaying;
+
+      if (isMelodyPlaying) {
+        musicIconPlay.classList.add('hidden');
+        musicIconPause.classList.remove('hidden');
+        loopMelodyNotes();
+      } else {
+        musicIconPlay.classList.remove('hidden');
+        musicIconPause.classList.add('hidden');
+        if (melodyTimer) clearTimeout(melodyTimer);
+      }
+    }
+
+    musicToggleBtn.addEventListener('click', toggleMelody);
+
+    // Botón de re-florecimiento
+    const rebloomBtn = document.getElementById('rebloomBtn');
+    rebloomBtn.addEventListener('click', () => {
+      buildLushSunflowerTree();
+      playHarpChime();
+    });
+
+    /* =========================================================================
+       5. INICIALIZACIÓN GENERAL
+       ========================================================================= */
+    window.addEventListener('load', () => {
+      buildLushSunflowerTree();
+      drawStarField();
+      renderAmbientLoop();
+      renderInteractiveLoop();
+    });
+  </script>
+</body>
+</html>
